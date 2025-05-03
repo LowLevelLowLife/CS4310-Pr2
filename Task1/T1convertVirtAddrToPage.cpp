@@ -16,7 +16,7 @@ int main() {
     pageSize = std::stoi(pageSizeStr);
 
     std::string virtAddr;
-    std::cout << "Enter a virtual address";
+    std::cout << "Enter a virtual address: ";
     std::cin >> virtAddr;
     std::cout << std::endl;
 
