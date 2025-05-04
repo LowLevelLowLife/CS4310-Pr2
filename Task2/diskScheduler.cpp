@@ -5,6 +5,7 @@
 #include <string> // store inputs as string
 #include <sys/types.h>
 #include <vector> // store inputs into dynamic array
+
 #include <ctime> // seed random num gen
 #include <cmath>
 #include <map>
