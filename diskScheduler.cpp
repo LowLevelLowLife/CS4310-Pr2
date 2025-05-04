@@ -5,6 +5,7 @@
 #include <string> // store inputs as string
 #include <sys/types.h>
 #include <vector> // store inputs into dynamic array
+//#include <random> // generate random disk requests
 #include <ctime> // seed random num gen
 #include <cmath>
 #include <map>
@@ -22,8 +23,8 @@ void deleteFromMapUsingIt(std::map<int32_t, int32_t> &mapa, int32_t key);
 
 void FCFS(const std::vector<int32_t> &diskRequests, int32_t diskMovementStatistics[][2]);
 void SSTF(const std::vector<int32_t> &diskRequests, int32_t diskMovementStatistics[][2]);
-void SCAN(const std::vector<int32_t> &diskRequests, int32_t diskMovementStatistics[][2]);
-void CSCAN(const std::vector<int32_t> &diskRequests, int32_t diskMovementStatistics[][2]);
+void SCAN(std::vector<int32_t> diskRequests, int32_t diskMovementStatistics[][2]);
+void CSCAN(std::vector<int32_t> diskRequests, int32_t diskMovementStatistics[][2]);
 
 void printDiskStats(int32_t diskMovementStatistics[][2]);
 
@@ -134,7 +135,7 @@ void SSTF(const std::vector<int32_t> &diskRequests, int32_t diskMovementStatisti
     int32_t sectorOffset = 0;
     int32_t numDiskReads = static_cast<int32_t>(diskRequests.size()) - 1;
     int32_t headDirection = 0;
-    for (size_t i = 0; i < static_cast<size_t>(numDiskReads); i++) {
+    for (size_t i = 0; static_cast<int32_t>(i) < numDiskReads; i++) {
         // printMap(requestsOffsetsFromInit);
         currentDiskSector = findMinOffset(requestsOffsetsFromInit);
         //std::cout << "current selected sector: " <<  currentDiskSector; //debug
@@ -161,7 +162,7 @@ void SSTF(const std::vector<int32_t> &diskRequests, int32_t diskMovementStatisti
 
 // TODO implement this with a binary search tree or heap that would sort the nodes so you could find things faster
 
-void SCAN(const std::vector<int32_t> &diskRequests, int32_t diskMovementStatistics[][2]) {
+void SCAN(std::vector<int32_t> diskRequests, int32_t diskMovementStatistics[][2]) {
 
     // determine direction of head
     int32_t headDirection = diskRequests[1] - diskRequests[0];
@@ -238,7 +239,7 @@ void SCAN(const std::vector<int32_t> &diskRequests, int32_t diskMovementStatisti
     }
 }
 
-void CSCAN(const std::vector<int32_t> &diskRequests, int32_t diskMovementStatistics[][2]) {
+void CSCAN(std::vector<int32_t> diskRequests, int32_t diskMovementStatistics[][2]) {
 
     std::map<int32_t, bool>visited;
     uint64_t numVisited = 1;
@@ -256,9 +257,6 @@ void CSCAN(const std::vector<int32_t> &diskRequests, int32_t diskMovementStatist
         for (size_t i = 0; i < numRequests; i++) {
             if (!visited[diskRequests[i]] && diskRequests[i] > current) {
                 visitList.push_back(diskRequests[i]);
-            }
-            if (diskRequests[i] == current) {
-                continue;
             }
         }
         // sort the enqueued cylinders in ascending order
